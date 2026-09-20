@@ -1,0 +1,28 @@
+# Independent upstream clones (each has its own Git remote)
+/code/minimind/
+/code/minimind-v/
+
+# Local runtime artifacts
+**/.venv/
+**/__pycache__/
+**/*.py[cod]
+**/.gitnexus/
+**/checkpoints/
+**/out/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+.playwright-mcp/
+*.log
+
+# Large model artifacts
+*.safetensors
+*.pth
+*.pt
+*.bin
+*.gguf
+*.onnx
+
+# OS/editor files
+.DS_Store
+Thumbs.db
