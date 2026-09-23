@@ -14,6 +14,7 @@
 **/.ruff_cache/
 .playwright-mcp/
 *.log
+!results/**/*.log
 
 # Large model artifacts
 *.safetensors

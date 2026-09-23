@@ -2,23 +2,24 @@
 
 ## Project Structure & Module Organization
 
-This workspace combines a notes repository with two independent Git clones:
-- `code/minimind/`: text LLM; core code is under `model/`, `dataset/`, `trainer/`, and `scripts/`, with `eval_llm.py` as the CLI.
-- `code/minimind-v/`: vision-language model; see `model/model_vlm.py`, `trainer/train_*_vlm.py`, and `eval_vlm.py`.
-- `notes/minimind-2/`: MkDocs pages under `docs/` and assets under `docs/images/`.
+Personal notes plus two independent upstream Git clones:
+- `code/minimind/`: text LLM; code in `model/`, `dataset/`, `trainer/`, `scripts/`; CLI is `eval_llm.py`.
+- `code/minimind-v/`: VLM and primary showcase project; see `model/model_vlm.py`, `trainer/train_*_vlm.py`.
+- `notes/`: MkDocs pages and study notes for advisor review.
+- `results/`: per-run evidence for resume and demos.
 
-Run Git commands inside the clone being changed. Treat `out/`, `.venv/`, `checkpoints/`, datasets, and model weights as generated files.
+Run Git inside the clone you change; `out/`, `.venv/`, `checkpoints/`, datasets, and weights are generated.
 
 ## Execution Environment
 
-- Use this workspace mainly for reading and reviewing code locally; do not assume training, evaluation, or WebUI runs locally.
-- Run training and heavy evaluation on AutoDL/Linux and record the required command and configuration.
-- Use the web UI for learning questions; change local files only for concrete code or documentation tasks.
-- After changing `code/minimind/` or `code/minimind-v/`, run `gitnexus analyze --index-only <repo-path>` before finishing.
+- Read code locally; run training and evaluation on AutoDL/Linux, recording commands and configuration.
+- This WSL checkout is canonical; the `E:\notes` copy is a stale fallback.
+- Use the web UI for learning questions; edit files only for concrete code or documentation tasks.
+- After editing a clone under `code/`, run `gitnexus analyze --index-only <repo-path>`.
 
 ## Build, Test, and Development Commands
 
-No compiled build step exists. The commands below target the remote workflow; run them locally only when requested. Use Python 3.10+.
+No compiled build step. Commands target AutoDL; run locally only when requested. Python 3.10+.
 
 ```powershell
 cd code/minimind
@@ -39,18 +40,25 @@ cd ..
 python eval_vlm.py --weight sft_vlm
 ```
 
-For multi-GPU training, run `torchrun --nproc_per_node N train_xxx.py` from the relevant `trainer/` directory.
+Multi-GPU: `torchrun --nproc_per_node N train_xxx.py` from `trainer/`.
 
 ## Coding Style & Naming Conventions
 
-Use 4-space Python indentation and PEP 8 spacing. Name functions and variables `snake_case`, classes `PascalCase`, and constants `UPPER_SNAKE_CASE`; examples include `MiniMindConfig` and `VLMDataset`. Group imports as standard library, third-party, then local modules. No formatter or linter is configured; avoid unrelated formatting churn.
+Use 4-space indentation and PEP 8 spacing: `snake_case` functions and variables, `PascalCase` classes, `UPPER_SNAKE_CASE` constants. Order imports standard library, third-party, local. No formatter or linter is configured; avoid unrelated reformatting.
 
 ## Testing Guidelines
 
-No automated test suite, coverage threshold, or CI command is defined. For lightweight local checks, run `python -m compileall model dataset trainer scripts eval_llm.py` (or VLM equivalents). Run real evaluation or training smoke tests on AutoDL. Add future tests under `tests/` as `test_<module>.py`.
+No automated suite or CI command is defined. For local syntax checks run `python -m compileall model dataset trainer scripts`; run real evaluation smoke tests on AutoDL. Add future tests under `tests/` as `test_<module>.py`.
+
+## Results & Showcase Sync
+
+Training output is resume evidence; never leave it only on AutoDL. Center showcase material on `minimind-v`.
+- Copy back metrics (`loss`, `lr`, `ppl`), configs, logs, eval output, curves, and screenshots after each run.
+- Store each run under `results/minimind-v/<run-name>/` following `results/minimind-v/README.md`: goal, GPU model and count, runtime, command, metrics.
+- Push to `RXCCCCCC/minimind-v-notes` in the same session; keep weights, checkpoints, and datasets out of Git.
 
 ## Commit & Pull Request Guidelines
 
-The notes repository uses `docs: ...` and `chore: ...`; MiniMind clones commonly use `[fix]`, `[update]`, `[feat]`, `[perf]`, and `[refactor]`. Match the active repository's history.
+Notes repo uses `docs:` or `chore:`; MiniMind clones use `[fix]`, `[update]` style subjects. Match the active repository's history.
 
-PRs should state the goal, affected modules, verification command and result, and linked issue. Include screenshots for WebUI or documentation changes; note GPU, checkpoint, or compatibility impact. Do not commit credentials, datasets, checkpoints, or new weights unless the upstream repository requires them.
+PRs state the goal, affected modules, verification result, and linked issue. Include screenshots for UI or docs changes and note GPU or compatibility impact.
