@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-09-25T13:12:21.539523+08:00",
+  "run": "2026-09-25-sft-vlm-moe-bs64-2epoch",
+  "model": "MiniMind-V MoE (use_moe=1, hidden_size=768, num_hidden_layers=8)",
+  "epochs": 2,
+  "steps_per_epoch": 45383,
+  "resume_from_step": 40000,
+  "final_step": 45383,
+  "final_loss": 1.924,
+  "final_logits_loss": 1.92,
+  "final_aux_loss": 0.004,
+  "final_lr": 5e-07,
+  "resume_runtime_min": 23.8,
+  "config": {
+    "batch_size": 64,
+    "accumulation_steps": 1,
+    "learning_rate": 5e-06,
+    "max_seq_len": 768,
+    "freeze_llm": 1,
+    "use_compile": 1,
+    "num_workers": 6,
+    "dtype": "bf16",
+    "use_moe": 1
+  },
+  "data": {
+    "sft_i2t.parquet": 2904511
+  },
+  "note": "epoch2 resumed from step 40000 with --from_resume 1 after a hang at 44800; completed 45383/45383.",
+  "eval_ours_speed_avg": 105.98,
+  "eval_official_speed_avg": 100.31,
+  "eval_our_first_image_speed": 71.1
+}
