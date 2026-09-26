@@ -168,3 +168,12 @@ top kernels：elementwise(551 calls) / cutlass-gemm(136) / elementwise(204) / fl
   - `checkpoints/sft_vlm_768_moe.pth`（409,088,012 B，12:24:14）
   - `checkpoints/sft_vlm_768_moe_resume.pth`（1,573,283,790 B，含优化器，12:24:15）
 - **结论**：官方 MoE SFT（2 epochs）已完整复现；下一步 Evaluation / Baseline / Modification。
+
+### 8.9 下一步实验计划（无卡模式准备，2026-09-26）
+
+- 无卡阶段已完成（无需 GPU）：
+  - 评估对比总结：`results/minimind-v/2026-09-25-sft-vlm-moe-bs64-2epoch/EVAL_SUMMARY.md`（自训平均 105.98 t/s 含预热，官方 100.31 t/s；剔除预热 ≈108.7 vs ≈100.9）
+  - 实验计划（Baseline / Modification / Controlled / Ablation + 有卡执行清单 + 预算）：`notes/minimind-v/EXPERIMENT_PLAN.md`
+  - M1 补丁草案（MoE 逐专家循环 → token 排序/分桶 + 连续切片）：`notes/minimind-v/patches/M1-moe-vectorized-dispatch.md`
+- 有卡待执行（一次开机跑完，预计 ¥3–4，不含可选全量复跑）：Step A 环境自检 → Step B 数值等价单测 → Step C 500-step A/B + profiler → Step D 5,000-step 受控训练 + 评估。
+- 纪律：修改官方源码前先出 diff；所有实验落在 `runs/experiments/`，不覆盖 `runs/sft_full/`；负结果同样归档。
