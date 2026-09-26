@@ -27,3 +27,13 @@
 # OS/editor files
 .DS_Store
 Thumbs.db
+
+# Dataset / caches / profiler traces (added 2026-09-26)
+*.parquet
+.cache/
+hf_cache/
+modelscope/
+wandb/
+swanlab/
+*.trace.json
+chrome_trace*

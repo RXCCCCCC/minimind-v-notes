@@ -3,7 +3,7 @@
 > 项目：MiniMind-V (MoE 200M-A65M) 完整复现
 > 目标：产出可用于科研简历 / 联系导师的完整实验记录
 > 最后更新：2026-09-24
-> 维护位置：本文件 + `/root/autodl-tmp/minimind-v-notes/PROJECT_LOG.md`（已完成记录）+ `/root/autodl-tmp/logs/`（原始日志）
+> 维护位置：本文件 + `/root/autodl-tmp/minimind-v-research/PROJECT_LOG.md`（已完成记录）+ `/root/autodl-tmp/logs/`（原始日志）
 
 ---
 
@@ -238,7 +238,7 @@ for i, expert in enumerate(self.experts):          # ← Python 循环遍历专�
 | `.cache/pip` | ~3G | ❌ 可删（`pip cache purge`） |
 | `checkpoints/*_resume.pth`（Pretrain 相关） | ~1.6G | ❌ 可删（Pretrain 已完工） |
 
-**绝不能删**：`dataset/*.parquet`（9.3G）、`out/*.pth`（1.2G）、`runs/pretrain_full/`（409M）、`model/siglip2-*/`（180M）、`minimind-v-notes/`、`logs/`
+**绝不能删**：`dataset/*.parquet`（9.3G）、`out/*.pth`（1.2G）、`runs/pretrain_full/`（409M）、`model/siglip2-*/`（180M）、`minimind-v-research/`、`logs/`
 
 ---
 
@@ -308,8 +308,8 @@ python -u eval_vlm.py --load_from model --weight sft_vlm --use_moe 1 \
 
 | 文件 | 内容 |
 |------|------|
-| `minimind-v-notes/PROJECT_LOG.md` | 已完成里程碑、工程问题、中断恢复记录 |
-| `minimind-v-notes/ENV_INVENTORY.md` | 环境盘点 |
+| `minimind-v-research/PROJECT_LOG.md` | 已完成里程碑、工程问题、中断恢复记录 |
+| `minimind-v-research/ENV_INVENTORY.md` | 环境盘点 |
 | `logs/step16_batch_bench.log` | batch 扫描原始数据 |
 | `logs/step17_compile_bench.log` | torch.compile 对比数据 |
 | `logs/step18_bench_profiler.log` / `step18_trace.json` / `step19_diag.log` | 接手方所留，待查看 |

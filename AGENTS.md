@@ -55,7 +55,7 @@ No automated suite or CI command is defined. For local syntax checks run `python
 Training output is resume evidence; never leave it only on AutoDL. Center showcase material on `minimind-v`.
 - Copy back metrics (`loss`, `lr`, `ppl`), configs, logs, eval output, curves, and screenshots after each run.
 - Store each run under `results/minimind-v/<run-name>/` following `results/minimind-v/README.md`: goal, GPU model and count, runtime, command, metrics.
-- Push to `RXCCCCCC/minimind-v-notes` in the same session; keep weights, checkpoints, and datasets out of Git.
+- Push to `RXCCCCCC/minimind-v-research` in the same session; keep weights, checkpoints, and datasets out of Git.
 
 ## Commit & Pull Request Guidelines
 

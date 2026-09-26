@@ -2,7 +2,7 @@
 
 本目录沉淀 `minimind-v` 的可展示证据，用于简历、导师沟通与技术复盘。
 
-训练在 AutoDL 上执行，结果必须回流到本地并推送到 GitHub 仓库 `minimind-v-notes`，不能只留在实例上。
+训练在 AutoDL 上执行，结果必须回流到本地并推送到 GitHub 仓库 `minimind-v-research`，不能只留在实例上。
 
 ## 目录约定
 

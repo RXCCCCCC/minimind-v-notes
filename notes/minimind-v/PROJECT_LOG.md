@@ -1,6 +1,6 @@
 # MiniMind-V 复现项目日志
 
-> 自动生成/维护。位置：/root/autodl-tmp/minimind-v-notes/PROJECT_LOG.md
+> 自动生成/维护。位置：/root/autodl-tmp/minimind-v-research/PROJECT_LOG.md
 
 ## 0. 目标
 完整复现 MiniMind-V (MoE 200M-A65M) 的 Pretrain + SFT，并产出可写进科研简历的
@@ -22,10 +22,12 @@ Modification / Controlled Experiment / Ablation 结果。
 | Dataset 检查 | DONE | pretrain 1,274,698 行 / sft 2,904,511 行；schema=(conversations, image_bytes) |
 | Pretrain smoke | DONE | 512 样本，256 步，loss 2.86→2.59，trainable 1.183M |
 | SFT smoke | DONE | 512 样本，256 步，loss 1.99~2.77，trainable 49.558M |
-| 完整 Pretrain | RUNNING | 2 epochs, batch 16, lr 4e-4, max_seq 450, freeze_llm=2 |
-| 完整 SFT | TODO | 2 epochs, batch 4, lr 5e-6, max_seq 768, freeze_llm=1 |
-| Evaluation | TODO | |
-| Baseline / Modification / Ablation | TODO | |
+| 完整 Pretrain | DONE | MoE，2 epochs × 79,669 步，RC=0；产物 runs/pretrain_full/pretrain_vlm_768_moe.pth（out/pretrain_vlm_768_moe.pth 为软链；官方备份 official_pretrain_vlm_768_moe.pth） |
+| 完整 SFT | DONE | MoE，2 epochs × 45,383 步，batch 64 + compile 1 + seq 768；最终 loss 1.9240；Epoch2 曾在 ~44,800 卡死，以 --from_resume 1 从 step 40,000 续训完成；产物 runs/sft_full/sft_vlm_768_moe.pth（409MB） |
+| Evaluation | DONE | 13 图；自训 ≈108 t/s vs 官方 ≈101 t/s（剔除预热）；见 results/minimind-v/2026-09-25-sft-vlm-moe-bs64-2epoch/EVAL_SUMMARY.md |
+| Profiling / 瓶颈定位 | DONE | ~4,038 kernels/step，GPU busy ≈29ms/step、wall ≈109ms/step → launch-bound；已排除 DataLoader / Vision Encoder / count_vision_proj / optimizer filter / 9 月 fix |
+| High-throughput 配置 | DONE | batch scaling 基准：bs64 峰值 ≈251.8 samples/s（bs96 OOM）；正式 SFT 采用 bs64 + torch.compile + seq768 |
+| Baseline / Modification / Controlled / Ablation | IN PROGRESS | Baseline 完成；Modification READY（M1 草案已备，非既定方案）；Controlled Experiment / Ablation TODO |
 
 ## 3. 复现中发现的工程问题（可写进项目文档）
 
@@ -177,3 +179,12 @@ top kernels：elementwise(551 calls) / cutlass-gemm(136) / elementwise(204) / fl
   - M1 补丁草案（MoE 逐专家循环 → token 排序/分桶 + 连续切片）：`notes/minimind-v/patches/M1-moe-vectorized-dispatch.md`
 - 有卡待执行（一次开机跑完，预计 ¥3–4，不含可选全量复跑）：Step A 环境自检 → Step B 数值等价单测 → Step C 500-step A/B + profiler → Step D 5,000-step 受控训练 + 评估。
 - 纪律：修改官方源码前先出 diff；所有实验落在 `runs/experiments/`，不覆盖 `runs/sft_full/`；负结果同样归档。
+
+## 9. 仓库交接与改名（2026-09-26）
+
+- GitHub 仓库已重命名：`RXCCCCCC/minimind-v-notes` → **`RXCCCCCC/minimind-v-research`**（保留全部 history / commits / notes / results）。
+- 策略：后续只维护这一个 Research 仓库（不再新建独立源码 fork；upstream 源码后续以 subtree/等价方案纳入 `src/minimind-v/`，由接手 Agent 审查后执行）。
+- upstream 复现基准 commit：`dacc68788998056476b21a4ca11325bdb277948c`（jingyaogong/minimind-v）。
+- 本地 origin 已更新为新仓库地址；AutoDL 侧 remote 与物理目录改名待 SSH 网络恢复后同步。
+- 下一步：Modification → Controlled Experiment → Ablation 交由 GPT-6 Sol 执行；本 Codex 仅负责正式长训练的启动与监控。
+- 交接提示词：`notes/minimind-v/MiniMind-V Modification 阶段 GPT-6 Sol 交接提示词.md`
